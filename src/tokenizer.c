@@ -71,12 +71,35 @@ void free_vectors(Tokens *ptr)
 
 void tokenize(Tokens *ptr, char phrase[], const char *lead_to_find)
 {
-    if (ptr == NULL || phrase == NULL || lead_to_find == NULL)
+    verify_ptr_and_exit((void *)ptr, "[tokenize-err]: invalid ptr structure");
+    verify_str_and_exit((char *)phrase);
+    verify_str_and_exit(lead_to_find);
+
+    char *token = strtok(phrase, lead_to_find);
+
+    while (token != NULL)
     {
-        fprintf(stderr, "Erro: ponteiro inválido ou delimitador ausente.\n");
-        exit(EXIT_FAILURE);
+        if (ptr->size == 0)
+        {
+            ptr->vector = (char **)malloc(sizeof(char **));
+            if (ptr->vector == NULL)
+            {
+                fprintf(stderr, "[tokenizer-err]: Out of memory.");
+                free_vectors(ptr);
+                exit(EXIT_FAILURE);
+            }
+            ptr->vector[ptr->size] = (char *)malloc(sizeof(char **) * sizeof(token));
+            if (ptr->vector[ptr->size] == NULL)
+            {
+                fprintf(stderr, "[tokenizer-err]: Out of memory.");
+                free_vectors(ptr);
+                exit(EXIT_FAILURE);
+            }
+            ptr->vector[sizeof(token)] = '\0';
+        }
+        else
+        {
+        }
     }
-
-
 }
 #endif
