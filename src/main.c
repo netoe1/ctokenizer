@@ -6,7 +6,7 @@ int main(void)
     Tokens tokens;
 
     init_tokens(&tokens);
-    tokenize(&tokens, "rock,teu,cu", ",");
-
+    tokenize(&tokens, "hello,hello", ",");
+    free_vectors(&tokens);
     return 0;
 }
