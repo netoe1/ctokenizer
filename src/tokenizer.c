@@ -84,6 +84,7 @@ void tokenize(Tokens *ptr, char phrase[], const char *lead_to_find)
     {
         fprintf(stderr, "[tokenize-err]: buffer not capable.");
         free_vectors(ptr);
+        free(phraseMutable);
         exit(EXIT_FAILURE);
     }
     printf("\nmeu token eh %s\n", token);
@@ -96,45 +97,48 @@ void tokenize(Tokens *ptr, char phrase[], const char *lead_to_find)
         {
             printf("\nptr-size:%d", ptr->size);
             ptr->vector = (char **)malloc(sizeof(char **));
-            if (ptr->vector == NULL)
-            {
-                fprintf(stderr, "[tokenizer-err]: Out of memory.");
-                free_vectors(ptr);
-                exit(EXIT_FAILURE);
-            }
+            // if (ptr->vector == NULL)
+            // {
+            //     fprintf(stderr, "[tokenizer-err]: Out of memory.");
+            //     free_vectors(ptr);
+            //     free(phraseMutable);
+            //     exit(EXIT_FAILURE);
+            // }
             ptr->vector[ptr->size] = (char *)malloc(sizeof(char *) * (strlen(token) + 1));
-            if (ptr->vector[ptr->size] == NULL)
-            {
-                fprintf(stderr, "[tokenizer-err]: Out of memory.");
-                free_vectors(ptr);
-                exit(EXIT_FAILURE);
-            }
-            ptr->vector[ptr->size][sizeof(token)] = '\0';
+            // if (ptr->vector[ptr->size] == NULL)
+            // {
+            //     fprintf(stderr, "[tokenizer-err]:Out of memory.");
+            //     free_vectors(ptr);
+            //     free(phraseMutable);
+            //     exit(EXIT_FAILURE);
+            // }
+            ptr->vector[ptr->size][strlen(token) + 1] = '\0';
             sprintf(ptr->vector[0], "%s", token);
-            ptr->size++;
         }
         else
         {
             ptr->vector = (char **)realloc(ptr->vector, sizeof(char **));
-            if (ptr->vector[ptr->size] == NULL)
-            {
-                fprintf(stderr, "[tokenizer-err]: Out of memory.");
-                free_vectors(ptr);
-                exit(EXIT_FAILURE);
-            }
+            // if (ptr->vector[ptr->size] == NULL)
+            // {
+            //     fprintf(stderr, "[tokenizer-err]: Out of memory.");
+            //     free_vectors(ptr);
+            //     free(phraseMutable);
+            //     exit(EXIT_FAILURE);
+            // }
 
             ptr->vector[ptr->size] = (char *)malloc(sizeof(char *) * (strlen(token) + 1));
-            if (ptr->vector[ptr->size] == NULL)
-            {
-                fprintf(stderr, "[tokenizer-err]: Out of memory.");
-                free_vectors(ptr);
-                exit(EXIT_FAILURE);
-            }
+            // if (ptr->vector[ptr->size] == NULL)
+            // {
+            //     fprintf(stderr, "[tokenizer-err]: Out of memory.");
+            //     free_vectors(ptr);
+            //     free(phraseMutable);
+            //     exit(EXIT_FAILURE);
+            // }
 
-            ptr->vector[ptr->size][sizeof(token)] = '\0';
+            ptr->vector[ptr->size][strlen(token) + 1] = '\0';
             sprintf(ptr->vector[ptr->size], "%s", token);
-            ptr->size++;
         }
+        ptr->size++;
     }
     free(phraseMutable);
 }
