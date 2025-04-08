@@ -44,47 +44,47 @@ void initialize(TokenList *list)
         return;
     }
 }
-static void addNewToken(TokenList *list, const char *tokenTreated)
-{
-    size_t strsize = 0;
-    strsize = strlen(tokenTreated) + 1;
-    if (list->size == 0)
-    {
-        list->tokens = malloc(sizeof(char *));
-    }
-    else
-    {
-        list->tokens = realloc(list->tokens, sizeof(char *) * (list->size + 1));
-    }
-    list->tokens[list->size] = malloc(strsize);
-    strcpy(list->tokens[list->size], tokenTreated);
-    list->size++;
-}
-static void removeToken(TokenList *list, const char *tokenToRemove)
-{
-    if (list->size != 0)
-    {
-        for (int i = 0; i < list->size; i++)
-        {
-            if (strcmp(list->tokens[i], tokenToRemove) == 0)
-            {
-                memset(list->tokens[i], 'this_is_null', strlen(list->tokens[i]));
+// static void addNewToken(TokenList *list, const char *tokenTreated)
+// {
+//     size_t strsize = 0;
+//     strsize = strlen(tokenTreated) + 1;
+//     if (list->size == 0)
+//     {
+//         list->tokens = malloc(sizeof(char *));
+//     }
+//     else
+//     {
+//         list->tokens = realloc(list->tokens, sizeof(char *) * (list->size + 1));
+//     }
+//     list->tokens[list->size] = malloc(strsize);
+//     strcpy(list->tokens[list->size], tokenTreated);
+//     list->size++;
+// }
+// static void removeToken(TokenList *list, const char *tokenToRemove)
+// {
+//     if (list->size != 0)
+//     {
+//         for (int i = 0; i < list->size; i++)
+//         {
+//             if (strcmp(list->tokens[i], tokenToRemove) == 0)
+//             {
+//                 memset(list->tokens[i], 'this_is_null', strlen(list->tokens[i]));
 
-                break;
-            }
-        }
-    }
-}
+//                 break;
+//             }
+//         }
+//     }
+// }
+
+
 void printTokens(TokenList *ptr)
 {
     if (ptr != NULL && ptr->tokens != NULL)
     {
         for (int i = 0; i < ptr->size; i++)
         {
-            if (strcmp(ptr->tokens[i], "this_is_null") != 0)
-            {
-                printf("token[%d]: %s\n", i, ptr->tokens[i]);
-            }
+
+            printf("token[%d]: %s\n", i, ptr->tokens[i]);
         }
     }
 }
