@@ -9,10 +9,9 @@ struct Node
     struct Node *next;
 };
 
-// Helper: Create a new node
 struct Node *createNode(const char *value)
 {
-    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    struct Node *newNode = malloc(sizeof(struct Node));
     if (!newNode)
     {
         printf("Memory allocation failed!\n");
@@ -23,7 +22,6 @@ struct Node *createNode(const char *value)
     return newNode;
 }
 
-// Add token at the end
 void addToken(struct Node **head, const char *value)
 {
     struct Node *newNode = createNode(value);
@@ -40,7 +38,6 @@ void addToken(struct Node **head, const char *value)
     temp->next = newNode;
 }
 
-// Remove first node with matching content
 void removeTokenByContent(struct Node **head, const char *value)
 {
     struct Node *current = *head;
@@ -52,30 +49,37 @@ void removeTokenByContent(struct Node **head, const char *value)
         {
             if (previous == NULL)
             {
-                *head = current->next; // removing the head
+                *head = current->next;
             }
             else
             {
-                previous->next = current->next; // re-link
+                previous->next = current->next;
             }
             free(current->token);
             free(current);
-            return; // remove only first match
+            return;
         }
         previous = current;
         current = current->next;
     }
 }
 
-// Remove node by index
 void removeTokenByIndex(struct Node **head, int index)
 {
     if (index < 0 || *head == NULL)
         return;
 
     struct Node *current = *head;
-    struct Node *previous = NULL;
 
+    if (index == 0)
+    {
+        *head = current->next;
+        free(current->token);
+        free(current);
+        return;
+    }
+
+    struct Node *previous = NULL;
     for (int i = 0; current != NULL && i < index; i++)
     {
         previous = current;
@@ -83,22 +87,14 @@ void removeTokenByIndex(struct Node **head, int index)
     }
 
     if (current == NULL)
-        return; // index out of bounds
+        return;
 
-    if (previous == NULL)
-    {
-        *head = current->next; // removing the head
-    }
-    else
-    {
-        previous->next = current->next; // re-link
-    }
+    previous->next = current->next;
     free(current->token);
     free(current);
 }
 
-// Get index of first matching token
-int getTokenIndex(struct Node *head, const char *value)
+int getTokenByIndex(struct Node *head, const char *value)
 {
     int index = 0;
     while (head != NULL)
@@ -113,9 +109,13 @@ int getTokenIndex(struct Node *head, const char *value)
     return -1;
 }
 
-// Print the entire list
-void printList(struct Node *head)
+void printTokens(struct Node *head)
 {
+    if (!head)
+    {
+        printf("Lista vazia.\n");
+        return;
+    }
     while (head != NULL)
     {
         printf("%s -> ", head->token);
@@ -124,7 +124,6 @@ void printList(struct Node *head)
     printf("NULL\n");
 }
 
-// Free memory
 void freeList(struct Node *head)
 {
     struct Node *temp;
@@ -137,10 +136,14 @@ void freeList(struct Node *head)
     }
 }
 
-void tokenize(struct Node **storage, const char *fullString)
+void tokenize(struct Node **storage, const char *fullString, const char *separator)
 {
+    if (!fullString || !separator || !storage)
+    {
+        fprintf(stderr, "tokenize-err: Invalid parameters on tokenize() call!");
+        return;
+    }
 
-    // Create a copy of the string because strtok modifies it
     char *copy = strdup(fullString);
     if (!copy)
     {
@@ -148,13 +151,12 @@ void tokenize(struct Node **storage, const char *fullString)
         return;
     }
 
-    char *token = strtok(copy, " \t\n"); // split by space/tab/newline
-
+    char *token = strtok(copy, separator);
     while (token != NULL)
     {
         addToken(storage, token);
-        token = strtok(NULL, " \t\n");
+        token = strtok(NULL, separator); // <--- CORRETO AQUI
     }
 
-    free(copy); // Clean up the copied string
+    free(copy);
 }
