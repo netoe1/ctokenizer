@@ -1,13 +1,24 @@
+/*
+ * tokenizer.c
+ * Copyright (C) 2025 Ely Neto
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU GPL along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
-
-struct Node
-{
-    char *token;
-    struct Node *next;
-};
+#include "tokenizer.h"
 
 struct Node *createNode(const char *value)
 {
@@ -136,11 +147,34 @@ void freeList(struct Node *head)
     }
 }
 
+void sanitizeToken(char *str)
+{
+    // Remove newline
+    str[strcspn(str, "\n")] = '\0';
+
+    // Remove leading spaces
+    char *start = str;
+    while (*start == ' ' || *start == '\t')
+        start++;
+
+    // Remove trailing spaces
+    char *end = start + strlen(start) - 1;
+    while (end > start && (*end == ' ' || *end == '\t'))
+    {
+        *end = '\0';
+        end--;
+    }
+
+    // Move conteúdo se houver espaço no início
+    if (start != str)
+        memmove(str, start, strlen(start) + 1);
+}
+
 void tokenize(struct Node **storage, const char *fullString, const char *separator)
 {
     if (!fullString || !separator || !storage)
     {
-        fprintf(stderr, "tokenize-err: Invalid parameters on tokenize() call!");
+        fprintf(stderr, "tokenize-err: Invalid parameters on tokenize() call!\n");
         return;
     }
 
@@ -154,8 +188,10 @@ void tokenize(struct Node **storage, const char *fullString, const char *separat
     char *token = strtok(copy, separator);
     while (token != NULL)
     {
-        addToken(storage, token);
-        token = strtok(NULL, separator); // <--- CORRETO AQUI
+        sanitizeToken(token);  // <<< sanitiza antes de armazenar
+        if (strlen(token) > 0) // evita armazenar tokens vazios
+            addToken(storage, token);
+        token = strtok(NULL, separator);
     }
 
     free(copy);
