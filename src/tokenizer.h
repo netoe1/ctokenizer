@@ -21,11 +21,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Node
+typedef struct Node
 {
     char *token;
     struct Node *next;
-};
+} TokenNode;
 
 struct Node *createNode(const char *value);
 void addToken(struct Node **head, const char *value);

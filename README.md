@@ -25,53 +25,56 @@ struct Node {
 ## 🔍 Funções Disponíveis
 
 ```c
-void tokenize(struct Node \**list, const char *text, const char \*separator)
+void tokenize(struct Node **list, const char *text, const char *separator)
 ```
 
-Divide uma string com base em um delimitador e adiciona os tokens à lista.
+- Divide uma string com base em um delimitador e adiciona os tokens à lista.
 
 ```c
- void sanitizeToken(char \*str)
+ void sanitizeToken(char *str)
 ```
 
-Remove espaços/tabs iniciais e finais, além de \n. Usada automaticamente na tokenização.
+- Remove espaços/tabs iniciais e finais, além de \n. Usada automaticamente na tokenização.
 
 ```c
-void addToken(struct Node \**head, const char *value)
+void addToken(struct Node **head, const char *value)
 ```
 
-Adiciona um novo token ao final da lista.
+- Adiciona um novo token ao final da lista.
 
 ```c
-void removeTokenByContent(struct Node \**head, const char *value)
+void removeTokenByContent(struct Node **head, const char *value)
 ```
 
-Remove o primeiro nó que contém o token igual ao valor especificado.
+- Remove o primeiro nó que contém o token igual ao valor especificado.
 
 ```c
-void removeTokenByIndex(struct Node \*\*head, int index)
+void removeTokenByIndex(struct Node **head, int index)
 ```
 
-Remove o nó localizado no índice informado.
+- Remove o nó localizado no índice informado.
 
 ```c
 int getTokenByIndex(struct Node *head, const char *value)
 ```
 
-Retorna o índice da primeira ocorrência do token. Retorna -1 se não encontrado.
+- Retorna o índice da primeira ocorrência do token. Retorna -1 se não encontrado.
 
 ```c
-void printTokens(struct Node \*head)
+void printTokens(struct Node *head)
 ```
 
-Imprime todos os tokens da lista no formato (para visualização em terminal):
-token1 -> token2 -> ... -> NULL
+- Imprime todos os tokens da lista no formato (para visualização em terminal):
+
+```
+   bash@foo:$ token1 -> token2 -> ... -> NULL
+```
 
 ```c
-void freeList(struct Node \*head)
+void freeList(struct Node *head)
 ```
 
-Libera toda a memória alocada pela lista.
+- Libera toda a memória alocada pela lista.
 
 # 🧼 Segurança e Robustez
 
